@@ -11,3 +11,4 @@ forskellige sim users og items n
 evt. forskellige K
 
 MF2
+Lav test der viser joint learning er dope
