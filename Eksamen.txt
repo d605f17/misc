@@ -1,0 +1,13 @@
+Eksamen
+
+KNN
+item-based!!! 
+evt. forskellige K
+
+MF1
+P og Q: 0-0.1 istedet for 0-1
+forskellige regularization (lambda) og learning rate (gamma) - plot
+forskellige sim users og items n
+evt. forskellige K
+
+MF2
