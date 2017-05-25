@@ -134,25 +134,26 @@ NDCG <- function(predictions, M, testData, ratingMatrix){
   return(NDCGk)
 }
 
-printResults <- function(predictions, testData, threshold, ratingMatrix, M) {
+printResults <- function(predictions, testData, ratingMatrix) {
   print("MAE, RMSE, REC3, REC4, PREC3, PREC4, F3, F4, NDCG")
-  print(paste(
-    MAE(predictions, testData),
-    RMSE(predictions, testData),
-    recall(predictions, testData, 3),
-    recall(predictions, testData, 4),
-    precision(predictions, testData, 3),
-    precision(predictions, testData, 4),
-    fmeasure(
-      precision(predictions, testData, 3),
-      recall(predictions, testData, 3)
-    ),
-    fmeasure(
-      precision(predictions, testData, 4),
-      recall(predictions, testData, 4)
-    ),
-    NDCG(predictions, M, testData, ratingMatrix)
-    ),
-    sep = ","
+  print(
+    paste(
+      round(MAE(predictions, testData), digits = 2),
+      round(RMSE(predictions, testData), digits = 2),
+      round(recall(predictions, testData, 3), digits = 2),
+      round(recall(predictions, testData, 4), digits = 2),
+      round(precision(predictions, testData, 3), digits = 2),
+      round(precision(predictions, testData, 4), digits = 2),
+      round(fmeasure(
+        precision(predictions, testData, 3),
+        recall(predictions, testData, 3)
+      ), digits = 2),
+      round(fmeasure(
+        precision(predictions, testData, 4),
+        recall(predictions, testData, 4)
+      ), digits = 2),
+      round(NDCG(predictions, 10, testData, ratingMatrix), digits = 2),
+      sep = ","
+    )
   )
 }
