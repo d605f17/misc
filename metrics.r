@@ -138,21 +138,21 @@ printResults <- function(predictions, testData, ratingMatrix) {
   print("MAE, RMSE, REC3, REC4, PREC3, PREC4, F3, F4, NDCG")
   print(
     paste(
-      round(MAE(predictions, testData), digits = 2),
-      round(RMSE(predictions, testData), digits = 2),
-      round(recall(predictions, testData, 3), digits = 2),
-      round(recall(predictions, testData, 4), digits = 2),
-      round(precision(predictions, testData, 3), digits = 2),
-      round(precision(predictions, testData, 4), digits = 2),
+      round(MAE(predictions, testData), digits = 4),
+      round(RMSE(predictions, testData), digits = 4),
+      round(recall(predictions, testData, 3), digits = 4),
+      round(recall(predictions, testData, 4), digits = 4),
+      round(precision(predictions, testData, 3), digits = 4),
+      round(precision(predictions, testData, 4), digits = 4),
       round(fmeasure(
         precision(predictions, testData, 3),
         recall(predictions, testData, 3)
-      ), digits = 2),
+      ), digits = 4),
       round(fmeasure(
         precision(predictions, testData, 4),
         recall(predictions, testData, 4)
-      ), digits = 2),
-      round(NDCG(predictions, 10, testData, ratingMatrix), digits = 2),
+      ), digits = 4),
+      round(NDCG(predictions, 10, testData, ratingMatrix), digits = 4),
       sep = ","
     )
   )
