@@ -83,3 +83,76 @@ recall <- function(predictions, testData, threshhold){
 fmeasure <- function(precision, recall){
   return((2*precision*recall)/(precision + recall))
 }
+
+NDCG <- function(predictions, M, testData, ratingMatrix){
+  numberOfUsers <- 943
+  totalNDCG <- 0
+  for(user in 1:numberOfUsers){
+    pi <- order(predictions[user, ], decreasing = TRUE)
+    rel <- order(ratingMatrix[user, ], decreasing = TRUE)
+    consideredItems <- 0
+    DCG <- 0
+    IDCG <- 0
+    knownItems <- as.matrix(testData[which(testData[, 1] == user), 2])
+    
+    for(item in pi){
+      if(item %in% knownItems){
+        consideredItems <- consideredItems + 1
+        consumed <- 0
+        rating <- testData[which(testData[, 1] == user & testData[, 2] == item), 3]
+        predictedRating <- predictions[user, item]
+        if(rating >= 4 & predictedRating >= 4){
+          consumed <- 1
+        }
+        DCG <- DCG + ((2^consumed) - 1)/(log(item + 1))
+        if(consideredItems >= M){
+          break
+        }
+      }
+    }
+    
+    consideredItems <- 0
+    for(item in rel){
+      if(item %in% knownItems){
+        consideredItems <- consideredItems + 1
+        rating <- testData[which(testData[, 1] == user & testData[, 2] == item), 3]
+        consumed <- 0
+        if(rating >= 4){
+          consumed <- 1
+        }
+        IDCG <- IDCG + ((2^consumed) - 1)/log(item + 1)
+        if(consideredItems >= M){
+          break
+        }
+      }
+    }
+    if(!is.na(DCG/IDCG)){
+      totalNDCG <- totalNDCG + DCG/IDCG
+    }
+  }
+  NDCGk <- totalNDCG/numberOfUsers
+  return(NDCGk)
+}
+
+printResults <- function(predictions, testData, threshold, ratingMatrix, M) {
+  print("MAE, RMSE, REC3, REC4, PREC3, PREC4, F3, F4, NDCG")
+  print(paste(
+    MAE(predictions, testData),
+    RMSE(predictions, testData),
+    recall(predictions, testData, 3),
+    recall(predictions, testData, 4),
+    precision(predictions, testData, 3),
+    precision(predictions, testData, 4),
+    fmeasure(
+      precision(predictions, testData, 3),
+      recall(predictions, testData, 3)
+    ),
+    fmeasure(
+      precision(predictions, testData, 4),
+      recall(predictions, testData, 4)
+    ),
+    NDCG(predictions, M, testData, ratingMatrix)
+    ),
+    sep = ","
+  )
+}
